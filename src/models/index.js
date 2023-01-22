@@ -5,26 +5,20 @@ const {PostTagModel} = require('./posttag.model')
 const {CommentModel} = require('./comment.model');
 
 // User - Post O:M relationship
-UserModel.hasMany(PostModel, {
-    foreignKey: {name: 'user_id', allowNull: false}
-})
+UserModel.hasMany(PostModel)
 PostModel.belongsTo(UserModel)
 
 // User - Comment O:M relationship
-UserModel.hasMany(CommentModel, {
-    foreignKey: {name: 'user_id', allowNull: false},
-});
+UserModel.hasMany(CommentModel);
 CommentModel.belongsTo(UserModel);
 
 // Post - Comment O:M relationship
-PostModel.hasMany(CommentModel, {
-    foreignKey: {name: 'post_id', allowNull: false},
-});
+PostModel.hasMany(CommentModel);
 CommentModel.belongsTo(PostModel);
 
 // Post - Tag M:N relationship
-PostModel.belongsToMany(TagModel, {through: PostTagModel, foreignKey: {name: 'post_id', allowNull: false}});
-TagModel.belongsToMany(PostModel, {through: PostTagModel, foreignKey: {name: 'tag_id', allowNull: false}});
+PostModel.belongsToMany(TagModel, {through: PostTagModel});
+TagModel.belongsToMany(PostModel, {through: PostTagModel});
 
 module.exports = {
     UserModel,
