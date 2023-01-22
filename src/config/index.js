@@ -13,7 +13,7 @@ module.exports = {
         name: process.env.POSTGRES_DB,
         username: process.env.POSTGRES_USER,
         password: process.env.POSTGRESS_PASSWORD,
-        host: parseInt(process.env.POSTGRES_HOST, 10),
+        host: process.env.POSTGRES_HOST,
         port: parseInt(process.env.POSTGRESS_PORT, 10),
     },
 
