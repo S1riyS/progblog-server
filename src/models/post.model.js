@@ -1,6 +1,7 @@
 const {DataTypes} = require('sequelize');
+const sequelize = require('../config/db.config')
 
-module.exports = (sequelize) => {
+module.exports = () => {
     sequelize.define('Post', {
         id: {
             allowNull: false,
