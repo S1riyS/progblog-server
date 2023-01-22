@@ -1,7 +1,9 @@
+const path = require('path')
 const express = require('express')
 const cors = require('cors')
 const helmet = require('helmet')
 const xss = require('xss-clean')
+const fileUpload = require('express-fileupload')
 
 const config = require('./config')
 const routes = require('./api')
@@ -16,7 +18,11 @@ app.use(helmet());
 app.use(xss());
 // Transforms the raw string of req.body into json
 app.use(express.json());
-// Load API api
+// Static content
+app.use(express.static(path.resolve(__dirname, '..', 'static')))
+// Allow receiving files
+app.use(fileUpload({}))
+// Load API
 app.use(config.api.prefix, routes);
 
 module.exports = app
