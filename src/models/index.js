@@ -5,15 +5,15 @@ const {PostTagModel} = require('./posttag.model')
 const {CommentModel} = require('./comment.model');
 
 // User - Post O:M relationship
-UserModel.hasMany(PostModel)
+UserModel.hasMany(PostModel, {as: 'posts'})
 PostModel.belongsTo(UserModel)
 
 // User - Comment O:M relationship
-UserModel.hasMany(CommentModel);
+UserModel.hasMany(CommentModel, {as: 'comments'});
 CommentModel.belongsTo(UserModel);
 
 // Post - Comment O:M relationship
-PostModel.hasMany(CommentModel);
+PostModel.hasMany(CommentModel, {as: 'comments'});
 CommentModel.belongsTo(PostModel);
 
 // Post - Tag M:N relationship
