@@ -24,5 +24,15 @@ app.use(express.static(path.resolve(__dirname, '..', 'static')))
 app.use(fileUpload({}))
 // Load API
 app.use(config.api.prefix, routes);
+// Errors handler
+app.use((error, req, res, next) => {
+    // Sets HTTP status code
+    res.status(error.status || 500)
+    // Sends response
+    res.json({
+        status: error.status,
+        message: error.message,
+    })
+})
 
 module.exports = app
