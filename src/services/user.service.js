@@ -21,6 +21,22 @@ class UserService {
             throw new Error(`Error while create user: ${e.message}`)
         }
     }
+
+    async retrieveOne(userId) {
+        const user = await UserModel.findOne({
+            where: {
+                id: userId
+            }
+        }).catch((error) => {
+            throw new Error(`Something went wrong: ${error.message}`)
+        })
+
+        if (user === null) {
+            throw new Error('User not found')
+        }
+
+        return user
+    }
 }
 
 module.exports = new UserService()

@@ -1,8 +1,7 @@
 const UserService = require('../services/user.service')
-const ApiError = require('../errors/apiError')
 
-class UserController{
-    async create(req, res, next) {
+class UserController {
+    async create(req, res) {
         try {
             const newUser = {
                 email: req.body.email,
@@ -14,7 +13,17 @@ class UserController{
             const user = await UserService.create(newUser)
             res.status(200).json(user)
         } catch (e) {
-            next(ApiError.badRequest(e.message))
+            res.status(404).json({status: 400, message: e.message})
+        }
+    }
+
+    async getOne(req, res) {
+        try {
+            const {id} = req.params
+            const user = await UserService.retrieveOne(id)
+            res.status(200).json(user)
+        } catch (e) {
+            res.status(404).json({status: 400, message: e.message})
         }
     }
 }
