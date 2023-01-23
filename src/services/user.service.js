@@ -17,8 +17,9 @@ class UserService {
                 avatar: fileName
             })
 
-        } catch (e) {
-            throw new Error(`Error while create user: ${e.message}`)
+        } catch (error) {
+            console.log(error)
+            throw new Error(`Error while creating user`)
         }
     }
 
@@ -27,7 +28,8 @@ class UserService {
             where: {
                 id: userId
             }
-        }).catch(() => {
+        }).catch((error) => {
+            console.log(error)
             throw new Error(`Something went wrong`)
         })
 
@@ -36,6 +38,21 @@ class UserService {
         }
 
         return user
+    }
+
+    async retrieveAll() {
+        const users = await  UserModel.findAll({
+            order: [['createdAt', 'DESC']],
+        }).catch((error) => {
+            console.log(error)
+            throw new Error(`Something went wrong`)
+        })
+
+        if (users.length === 0) {
+            throw new Error('Users not found')
+        }
+
+        return users
     }
 }
 

@@ -28,6 +28,15 @@ class UserController {
             throw createError(400, e.message)
         }
     })
+
+    getAll = asyncHandler(async  (req, res, next) => {
+        try {
+            const users = await UserService.retrieveAll()
+            res.status(200).json(users)
+        } catch (e) {
+            throw createError(400, e.message)
+        }
+    })
 }
 
 module.exports = new UserController()
