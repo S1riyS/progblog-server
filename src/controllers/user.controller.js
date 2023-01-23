@@ -1,7 +1,9 @@
+const asyncHandler = require('express-async-handler')
+const createError = require('http-errors')
 const UserService = require('../services/user.service')
 
 class UserController {
-    async create(req, res) {
+    create = asyncHandler(async (req, res, next) => {
         try {
             const newUser = {
                 email: req.body.email,
@@ -13,19 +15,19 @@ class UserController {
             const user = await UserService.create(newUser)
             res.status(200).json(user)
         } catch (e) {
-            res.status(404).json({status: 400, message: e.message})
+            throw createError(400, e.message)
         }
-    }
+    })
 
-    async getOne(req, res) {
+    getOne = asyncHandler(async (req, res, next) => {
         try {
             const {id} = req.params
             const user = await UserService.retrieveOne(id)
             res.status(200).json(user)
         } catch (e) {
-            res.status(404).json({status: 400, message: e.message})
+            throw createError(400, e.message)
         }
-    }
+    })
 }
 
 module.exports = new UserController()
