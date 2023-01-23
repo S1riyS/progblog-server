@@ -27,8 +27,8 @@ class UserService {
             where: {
                 id: userId
             }
-        }).catch((error) => {
-            throw new Error(`Something went wrong: ${error.message}`)
+        }).catch(() => {
+            throw new Error(`Something went wrong`)
         })
 
         if (user === null) {
