@@ -20,4 +20,9 @@ module.exports = {
     api: {
         prefix: '/api',
     },
+
+    jwt: {
+        secret_key: process.env.JWT_SECRET_KEY,
+        expires_in: process.env.JWT_EXPIRES_IN,
+    }
 }
