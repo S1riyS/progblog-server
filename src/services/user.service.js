@@ -23,11 +23,9 @@ class UserService {
         }
     }
 
-    async retrieveOne(userId) {
+    async retrieveOne(params) {
         const user = await UserModel.findOne({
-            where: {
-                id: userId
-            }
+            where: params
         }).catch((error) => {
             console.log(error)
             throw new Error(`Something went wrong`)
