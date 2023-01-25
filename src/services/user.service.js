@@ -17,6 +17,14 @@ class UserService {
         }
     }
 
+    async checkUser(params) {
+        // True if user with given params exist, false if it doesn't
+        const user = await UserModel.findOne({
+            where: params
+        })
+        return user !== null
+    }
+
     async retrieveOne(params) {
         const user = await UserModel.findOne({
             where: params
@@ -33,7 +41,7 @@ class UserService {
     }
 
     async retrieveAll() {
-        const users = await  UserModel.findAll({
+        const users = await UserModel.findAll({
             order: [['createdAt', 'DESC']],
         }).catch((error) => {
             console.log(error)
