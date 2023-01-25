@@ -56,6 +56,11 @@ class UserController {
         return res.status(200).json({token})
     })
 
+    auth = asyncHandler(async (req, res, next) => {
+        const token = generateJWT({id: req.user.id, email: req.user.email})
+        return res.status(200).json({token})
+    })
+
     getOne = asyncHandler(async (req, res, next) => {
         try {
             const {id} = req.params
