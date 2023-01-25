@@ -5,7 +5,6 @@ const asyncHandler = require('express-async-handler')
 const createError = require('http-errors')
 const generateJWT = require('../utils/generateJWT')
 const UserService = require('../services/user.service')
-const {reject} = require("bcrypt/promises");
 
 class UserController {
     register = asyncHandler(async (req, res, next) => {
