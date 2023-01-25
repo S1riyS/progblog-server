@@ -1,3 +1,4 @@
+const createError = require('http-errors')
 const {UserModel} = require('../models')
 
 class UserService {
@@ -14,7 +15,7 @@ class UserService {
 
         } catch (error) {
             console.log(error)
-            throw new Error(`Error while creating user`)
+            throw createError(`Error while creating user`)
         }
     }
 
@@ -23,11 +24,11 @@ class UserService {
             where: params
         }).catch((error) => {
             console.log(error)
-            throw new Error(`Something went wrong`)
+            throw createError(`Something went wrong`)
         })
 
         if (user === null) {
-            throw new Error('User not found')
+            throw createError('User not found')
         }
 
         return user
@@ -38,11 +39,11 @@ class UserService {
             order: [['createdAt', 'DESC']],
         }).catch((error) => {
             console.log(error)
-            throw new Error(`Something went wrong`)
+            throw createError(`Something went wrong`)
         })
 
         if (users.length === 0) {
-            throw new Error('Users not found')
+            throw createError('Users not found')
         }
 
         return users
