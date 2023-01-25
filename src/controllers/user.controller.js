@@ -1,3 +1,5 @@
+const uuid = require('uuid')
+const path = require('path');
 const bcrypt = require('bcrypt')
 const asyncHandler = require('express-async-handler')
 const createError = require('http-errors')
@@ -11,12 +13,14 @@ class UserController {
             const {avatar} = req.files
 
             // Checking if user with given email is already exist
-            UserService.retrieveOne({'email': email})
-                .then(() => {
-                    throw createError(400, 'User with this email is already exist')
-                })
-                .catch(() => {
-                })
+            const candidate = UserService.retrieveOne({'email': email})
+            if (!(candidate instanceof Error)) {
+                throw createError(400, 'User with this email is already exist')
+            }
+
+            // Saving profile picture to static
+            let fileName = uuid.v4() + ".jpg"
+            await avatar.mv(path.resolve(__dirname, '..', '..', 'static', fileName))
 
             // Hashing password
             const salt = await bcrypt.genSalt(5);
@@ -27,7 +31,7 @@ class UserController {
                 password: hashedPassword,
                 name: name,
                 bio: bio,
-                avatar: avatar
+                avatar: fileName
             })
 
             const token = generateJWT({id: user.dataValues.id, email: user.dataValues.email})
