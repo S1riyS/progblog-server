@@ -1,4 +1,3 @@
-const {Sequelize} = require("sequelize");
 const {TagModel} = require('../models')
 
 class TagService {
@@ -36,19 +35,13 @@ class TagService {
     }
 
     async retrieveAll() {
-        const tags = TagModel.findAll({
-            attributes: [
-                'id',
-                'name',
-                [Sequelize.fn('COUNT', Sequelize.col('posts.id')), 'posts_count'],
-            ],
-            order: [[Sequelize.col('posts_count'), 'DESC']],
-        }).catch((error) => {
-            console.log(error);
-            throw new Error('Something went wrong')
-        })
+        const tags = await TagModel.findAll()
+            .catch((error) => {
+                console.log(error);
+                throw new Error('Something went wrong')
+            })
 
-        if (tags === null) {
+        if (tags.length === 0) {
             throw new Error('Tags not found')
         }
 
