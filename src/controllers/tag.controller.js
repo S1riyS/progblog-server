@@ -6,7 +6,19 @@ class TagController {
     getOne = asyncHandler(async (req, res, next) => {
         try {
             const {tagName} = req.params
-            return await TagService.retrieveOne(tagName)
+            const tag =  await TagService.retrieveOne(tagName)
+            res.status(200).json(tag)
+
+        } catch (e) {
+            throw createError(400, e.message)
+        }
+    })
+
+    getAll = asyncHandler(async (req, res, next) => {
+        try {
+            const tags = await TagService.retrieveAll()
+            return res.status(200).json(tags)
+
         } catch (e) {
             throw createError(400, e.message)
         }
