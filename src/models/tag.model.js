@@ -13,6 +13,10 @@ const TagModel = sequelize.define('Tag', {
         unique: true,
         type: DataTypes.STRING,
     },
+    description: {
+        allowNull: false,
+        type: DataTypes.TEXT,
+    },
 }, {
     timestamps: false,
 });
