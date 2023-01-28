@@ -2,7 +2,11 @@ const {TagModel} = require('../models')
 
 class TagService {
     async create(newTag) {
-        return await TagModel.create({name: newTag.name})
+        return await TagModel
+            .create({
+                name: newTag.name,
+                description: newTag.description
+            })
             .catch((error) => {
                 console.log(error)
                 throw new Error('Error while creating tag')
@@ -15,6 +19,15 @@ class TagService {
                 console.log(error)
                 throw new Error('Error while creating tags')
             })
+    }
+
+    async check(tagName) {
+        const tag = await TagModel.findOne({
+            where: {
+                name: tagName
+            }
+        })
+        return tag !== null
     }
 
     async retrieveOne(tagName) {
