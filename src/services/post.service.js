@@ -1,20 +1,77 @@
-const {PostModel} = require('../models')
+const {PostModel, TagModel} = require('../models')
 
-class PostService{
+class PostService {
     async create(newPost) {
-
+        return await PostModel
+            .create({
+                banner: newPost.banner,
+                title: newPost.title,
+                content: newPost.content,
+                UserId: newPost.userId
+            })
+            .catch((error) => {
+                console.log(error)
+                throw new Error('Error while creating post')
+            })
     }
 
     async retrieveOne(id) {
+        const tag = await PostModel
+            .findOne({
+                where: {
+                    id: id
+                },
+                include: [
+                    {
+                        model: TagModel,
+                        required: false,
+                        attributes: ['id', 'name'],
+                    }
+                ]
+            })
+            .catch((error) => {
+                console.log(error)
+                throw new Error('Something went wrong')
+            })
 
+        if (tag === null) {
+            throw new Error('Post not found')
+        }
+
+        return tag
     }
 
-    async retrieveAll(id) {
+    async retrieveAll() {
+        const posts = await PostModel
+            .findAll({
+                include: [
+                    {
+                        model: TagModel,
+                        required: false,
+                        attributes: ['id', 'name'],
+                    }
+                ]
+            })
+            .catch((error) => {
+                console.log(error);
+                throw new Error('Something went wrong')
+            })
 
+        if (posts.length === 0) {
+            throw new Error('Tags not found')
+        }
+
+        return posts
     }
 
     async delete(id) {
-
+        await PostModel
+            .destroy({where: {id: id}})
+            .then(() => ({status: true, message: 'Post Removed'}))
+            .catch((error) => {
+                console.log(error);
+                throw new Error(`Post Delete Operation Failed: ${error}`);
+            });
     }
 }
 
