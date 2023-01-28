@@ -59,13 +59,29 @@ class PostService {
     async retrieveAll() {
         const posts = await PostModel
             .findAll({
+                attributes: [
+                    'id',
+                    'title',
+                    'content',
+                    'views',
+                    'createdAt',
+                ],
                 include: [
                     {
                         model: TagModel,
                         required: false,
                         attributes: ['id', 'name'],
+                        through: {
+                            attributes: [],
+                        }
+                    },
+                    {
+                        model: UserModel,
+                        required: true,
+                        attributes: ['id', 'name', 'avatar']
                     }
-                ]
+                ],
+                order: [['createdAt', 'DESC']],
             })
             .catch((error) => {
                 console.log(error);

@@ -66,6 +66,16 @@ class PostController {
             throw createError(400, e.message)
         }
     })
+
+    getAll = asyncHandler(async (req, res, next) => {
+        try {
+            const posts = await PostService.retrieveAll()
+            res.status(200).json(posts)
+
+        } catch (e) {
+            throw createError(400, e.message)
+        }
+    })
 }
 
 module.exports = new PostController()
