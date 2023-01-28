@@ -1,4 +1,4 @@
-const {PostModel, TagModel} = require('../models')
+const {PostModel, TagModel, UserModel} = require('../models')
 
 class PostService {
     async create(newPost) {
@@ -21,11 +21,26 @@ class PostService {
                 where: {
                     id: id
                 },
+                attributes: [
+                    'id',
+                    'title',
+                    'content',
+                    'views',
+                    'createdAt',
+                ],
                 include: [
                     {
                         model: TagModel,
                         required: false,
                         attributes: ['id', 'name'],
+                        through: {
+                            attributes: [],
+                        }
+                    },
+                    {
+                        model: UserModel,
+                        required: true,
+                        attributes: ['id', 'name', 'avatar']
                     }
                 ]
             })
