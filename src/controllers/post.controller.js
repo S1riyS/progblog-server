@@ -2,6 +2,7 @@ const uuid = require('uuid')
 const path = require('path');
 const asyncHandler = require('express-async-handler')
 const createError = require('http-errors')
+const UserService = require('../services/user.service')
 const TagService = require('../services/tag.service')
 const PostService = require('../services/post.service')
 const PostTagService = require('../services/posttag.service')
@@ -9,14 +10,23 @@ const PostTagService = require('../services/posttag.service')
 
 class PostController {
     create = asyncHandler(async (req, res, next) => {
-        const {banner, title, content, userId, tags} = req.body
+        const {title, content, userId, tagNames} = req.body
+        const {banner} = req.files
+        const tags = tagNames.split(',').map((item) => item.trim());
 
         // Saving banner to static
         let bannerFileName = uuid.v4() + ".jpg"
         await banner.mv(path.resolve(__dirname, '..', '..', 'static', bannerFileName))
 
+        // Checking tags
         if (tags.length > 5) {
             throw createError(400, 'The maximum number of tags is 5')
+        }
+
+        // Validating user
+        const author = await UserService.checkUser({'id': userId})
+        if (!author) {
+            throw createError(400, 'The user is specified incorrectly')
         }
 
         try {
@@ -28,8 +38,8 @@ class PostController {
             })
 
             let postTagRelationships = []
-            for (const tag of tags) {
-                const tag = await TagService.retrieveOne(tag)
+            for (const tagName of tags) {
+                const tag = await TagService.retrieveOne(tagName)
                 if (tag) {
                     postTagRelationships.push({
                         PostId: post.dataValues.id,
