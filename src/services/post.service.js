@@ -101,7 +101,7 @@ class PostService {
             .then(() => ({status: true, message: 'Post Removed'}))
             .catch((error) => {
                 console.log(error);
-                throw new Error(`Post Delete Operation Failed: ${error}`);
+                throw new Error('Post Delete Operation Failed');
             });
     }
 
@@ -114,7 +114,7 @@ class PostService {
             .then(() => ({status: true, message: 'Post views incremented'}))
             .catch((error) => {
                 console.log(error);
-                throw new Error(`Post Views Incrementation Failed: ${error}`);
+                throw new Error('Post Views Incrementation Failed');
             })
     }
 }

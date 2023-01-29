@@ -14,7 +14,8 @@ class PostTagService {
             .destroy({where: {PostId: postId}})
             .then(() => ({status: true, message: 'PostTag Removed'}))
             .catch((error) => {
-                throw new Error(`PostTag Delete Operation Failed: ${error.message}`);
+                console.log(error);
+                throw new Error('PostTag Delete Operation Failed');
             });
     }
 }
