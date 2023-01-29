@@ -104,6 +104,19 @@ class PostService {
                 throw new Error(`Post Delete Operation Failed: ${error}`);
             });
     }
+
+    async incrementViews(id) {
+        await PostModel
+            .increment('views', {
+                by: 1,
+                where: { id: id },
+            })
+            .then(() => ({status: true, message: 'Post views incremented'}))
+            .catch((error) => {
+                console.log(error);
+                throw new Error(`Post Views Incrementation Failed: ${error}`);
+            })
+    }
 }
 
 module.exports = new PostService()
