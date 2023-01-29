@@ -1,6 +1,31 @@
 const {PostModel, TagModel, UserModel} = require('../models')
 
 class PostService {
+    #genericRetrieveQuery = {
+        attributes: [
+            'id',
+            'title',
+            'content',
+            'views',
+            'createdAt',
+        ],
+        include: [
+            {
+                model: TagModel,
+                required: false,
+                attributes: ['id', 'name'],
+                through: {
+                    attributes: [],
+                }
+            },
+            {
+                model: UserModel,
+                required: true,
+                attributes: ['id', 'name', 'avatar']
+            }
+        ]
+    }
+
     async create(newPost) {
         return await PostModel
             .create({
@@ -16,34 +41,11 @@ class PostService {
     }
 
     async retrieveOne(id) {
+        const retrieveOneQuery = this.#genericRetrieveQuery
+        retrieveOneQuery.where = {id: id}
+
         const tag = await PostModel
-            .findOne({
-                where: {
-                    id: id
-                },
-                attributes: [
-                    'id',
-                    'title',
-                    'content',
-                    'views',
-                    'createdAt',
-                ],
-                include: [
-                    {
-                        model: TagModel,
-                        required: false,
-                        attributes: ['id', 'name'],
-                        through: {
-                            attributes: [],
-                        }
-                    },
-                    {
-                        model: UserModel,
-                        required: true,
-                        attributes: ['id', 'name', 'avatar']
-                    }
-                ]
-            })
+            .findOne(retrieveOneQuery)
             .catch((error) => {
                 console.log(error)
                 throw new Error('Something went wrong')
@@ -57,32 +59,11 @@ class PostService {
     }
 
     async retrieveAll() {
+        const retrieveAllQuery = this.#genericRetrieveQuery
+        retrieveAllQuery.order = [['createdAt', 'DESC']]
+
         const posts = await PostModel
-            .findAll({
-                attributes: [
-                    'id',
-                    'title',
-                    'content',
-                    'views',
-                    'createdAt',
-                ],
-                include: [
-                    {
-                        model: TagModel,
-                        required: false,
-                        attributes: ['id', 'name'],
-                        through: {
-                            attributes: [],
-                        }
-                    },
-                    {
-                        model: UserModel,
-                        required: true,
-                        attributes: ['id', 'name', 'avatar']
-                    }
-                ],
-                order: [['createdAt', 'DESC']],
-            })
+            .findAll(retrieveAllQuery)
             .catch((error) => {
                 console.log(error);
                 throw new Error('Something went wrong')
