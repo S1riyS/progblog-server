@@ -11,7 +11,7 @@ class PostTagService {
 
     async delete(postId) {
         await PostTagModel
-            .destroy({where: {postId: postId}})
+            .destroy({where: {PostId: postId}})
             .then(() => ({status: true, message: 'PostTag Removed'}))
             .catch((error) => {
                 throw new Error(`PostTag Delete Operation Failed: ${error.message}`);
