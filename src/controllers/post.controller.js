@@ -78,6 +78,17 @@ class PostController {
         }
     })
 
+    getByTag = asyncHandler(async (req, res, next) => {
+        try {
+            const {tagName} = req.params
+            const posts = await PostService.retrieveAll(tagName)
+            res.status(200).json(posts)
+
+        } catch (e) {
+            throw createError(400, e.message)
+        }
+    })
+
     delete = asyncHandler(async  (req, res, next) => {
         try {
             const {id} = req.params

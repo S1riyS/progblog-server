@@ -58,9 +58,13 @@ class PostService {
         return tag
     }
 
-    async retrieveAll() {
+    async retrieveAll(tagName = '') {
         const retrieveAllQuery = this.#genericRetrieveQuery
         retrieveAllQuery.order = [['createdAt', 'DESC']]
+
+        if (tagName !== '') {
+            retrieveAllQuery.where = {'$Tags.name$': tagName}
+        }
 
         const posts = await PostModel
             .findAll(retrieveAllQuery)
