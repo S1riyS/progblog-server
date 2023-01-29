@@ -60,6 +60,7 @@ class PostController {
         try {
             const {id} = req.params
             const post = await PostService.retrieveOne(id)
+            await PostService.incrementViews(id)
             res.status(200).json(post)
 
         } catch (e) {
