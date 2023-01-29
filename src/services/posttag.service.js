@@ -2,7 +2,8 @@ const {PostTagModel} = require('../models')
 
 class PostTagService {
     async bulkCreate(tags) {
-        await PostTagModel.bulkCreate(tags)
+        await PostTagModel
+            .bulkCreate(tags)
             .catch((error) => {
                 console.log(error);
                 throw new Error('Something went wrong');
