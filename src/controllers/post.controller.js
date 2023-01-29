@@ -76,6 +76,17 @@ class PostController {
             throw createError(400, e.message)
         }
     })
+
+    delete = asyncHandler(async  (req, res, next) => {
+        try {
+            const {id} = req.params
+            await PostService.delete(id)
+            await PostTagService.delete(id)
+            res.status(200).json({message: 'Post deleted'})
+        } catch (e) {
+            throw createError(400, e.message)
+        }
+    })
 }
 
 module.exports = new PostController()
