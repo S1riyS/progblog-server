@@ -35,6 +35,17 @@ class CommentController {
             throw createError(400, e.message)
         }
     })
+
+    getOne = asyncHandler(async  (req, res, next) => {
+        try {
+            const {id} = req.params
+            const comment = await CommentService.retrieveOne(id)
+            console.log(comment);
+            res.status(200).json(comment)
+        } catch (e) {
+            throw createError(400, e.message)
+        }
+    })
 }
 
 module.exports = new CommentController()
