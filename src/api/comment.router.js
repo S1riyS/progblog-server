@@ -1,7 +1,8 @@
 const Router = require("express");
 const router = new Router()
+const authMiddleware = require('../middlewares/auth.middleware')
 const CommentController = require('../controllers/comment.controller')
 
-// Routes here
+router.post('/', authMiddleware, CommentController.create)
 
 module.exports = router
