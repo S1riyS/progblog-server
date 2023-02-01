@@ -7,7 +7,7 @@ const TagRouter = require('./tag.router')
 
 router.use('/user', UserRouter)
 router.use('/post', PostRouter)
-router.use('/comment', PostRouter)
+router.use('/comment', CommentRouter)
 router.use('/tag', TagRouter)
 
 module.exports = router
