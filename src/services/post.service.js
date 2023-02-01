@@ -80,6 +80,11 @@ class PostService {
         return posts
     }
 
+    async check(queryParams) {
+        const post = await PostModel.findOne({where: queryParams})
+        return post !== null
+    }
+
     async delete(id) {
         await PostModel
             .destroy({where: {id: id}})
@@ -94,7 +99,7 @@ class PostService {
         await PostModel
             .increment('views', {
                 by: 1,
-                where: { id: id },
+                where: {id: id},
             })
             .then(() => ({status: true, message: 'Post views incremented'}))
             .catch((error) => {
