@@ -36,12 +36,31 @@ class CommentController {
         }
     })
 
-    getOne = asyncHandler(async  (req, res, next) => {
+    getOne = asyncHandler(async (req, res, next) => {
         try {
             const {id} = req.params
             const comment = await CommentService.retrieveOne(id)
-            console.log(comment);
             res.status(200).json(comment)
+        } catch (e) {
+            throw createError(400, e.message)
+        }
+    })
+
+    getByPost = asyncHandler(async (req, res, next) => {
+        try {
+            const {postId} = req.params
+            const comments = await CommentService.retrieveAll({'$Post.id$': postId})
+            res.status(200).json(comments)
+        } catch (e) {
+            throw createError(400, e.message)
+        }
+    })
+
+    getByUser = asyncHandler(async (req, res, next) => {
+        try {
+            const {userId} = req.params
+            const comments = await CommentService.retrieveAll({'$User.id$': userId})
+            res.status(200).json(comments)
         } catch (e) {
             throw createError(400, e.message)
         }

@@ -46,6 +46,20 @@ class CommentService {
 
         return comment
     }
+
+    async retrieveAll(queryParams) {
+        const retrieveAllQuery = this.#genericRetrieveQuery
+        retrieveAllQuery.where = queryParams
+        retrieveAllQuery.order = [['createdAt', 'DESC']]
+        console.log(retrieveAllQuery);
+
+        return await CommentModel
+            .findAll(retrieveAllQuery)
+            .catch((error) => {
+                console.log(error)
+                throw new Error('Something went wrong')
+            })
+    }
 }
 
 module.exports = new CommentService()

@@ -5,5 +5,7 @@ const CommentController = require('../controllers/comment.controller')
 
 router.post('/', authMiddleware, CommentController.create)
 router.get('/:id', CommentController.getOne)
+router.get('/post/:postId', CommentController.getByPost)
+router.get('/user/:userId', CommentController.getByUser)
 
 module.exports = router
