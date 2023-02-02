@@ -1,9 +1,6 @@
 const app = require('./app')
 const config = require('./config')
 const sequelize = require('./config/db.config')
-const models = require('./models')
-
-console.log(config);
 
 const start = async () => {
     try {
