@@ -65,6 +65,16 @@ class CommentController {
             throw createError(400, e.message)
         }
     })
+
+    delete = asyncHandler(async (req, res, next) => {
+        try {
+            const {id} = req.params
+            const serviceResponse = await CommentService.delete(id)
+            res.status(200).json(serviceResponse)
+        } catch (e) {
+            throw createError(400, e.message)
+        }
+    })
 }
 
 module.exports = new CommentController()

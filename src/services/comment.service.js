@@ -65,6 +65,21 @@ class CommentService {
                 throw new Error('Something went wrong')
             })
     }
+
+    async delete(id) {
+        return await CommentModel
+            .destroy({where: {id: id}})
+            .then((isDeleted) => {
+                if (isDeleted) {
+                    return {success: true, message: 'Comment removed'}
+                }
+                return {success: false, message: 'Comment was not removed'}
+            })
+            .catch((error) => {
+                console.log(error);
+                throw new Error('Comment Delete Operation Failed');
+            });
+    }
 }
 
 module.exports = new CommentService()
