@@ -80,8 +80,8 @@ class PostService {
         return posts
     }
 
-    async check(queryParams) {
-        const post = await PostModel.findOne({where: queryParams})
+    async check(searchParams) {
+        const post = await PostModel.findOne({where: searchParams})
         return post !== null
     }
 

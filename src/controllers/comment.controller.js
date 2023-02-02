@@ -13,7 +13,7 @@ class CommentController {
             throw createError(400, 'Comment can\'t be empty')
         }
 
-        const authorExists = await UserService.checkUser({'id': userId})
+        const authorExists = await UserService.check({'id': userId})
         if (!authorExists) {
             throw createError(400, 'The user is specified incorrectly')
         }

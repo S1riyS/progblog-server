@@ -24,7 +24,7 @@ class PostController {
         }
 
         // Validating user
-        const author = await UserService.checkUser({'id': userId})
+        const author = await UserService.check({'id': userId})
         if (!author) {
             throw createError(400, 'The user is specified incorrectly')
         }

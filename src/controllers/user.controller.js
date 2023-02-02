@@ -15,7 +15,7 @@ class UserController {
             throw createError(400, 'Incorrect email or password')
         }
 
-        const candidate = await UserService.checkUser({'email': email})
+        const candidate = await UserService.check({'email': email})
         if (candidate) {
             throw createError(400, 'User with this email is already exist')
         }
