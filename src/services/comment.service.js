@@ -1,4 +1,4 @@
-const {CommentModel, UserModel} = require('../models')
+const {CommentModel, UserModel, PostModel} = require('../models')
 
 class CommentService {
     #genericRetrieveQuery = {
@@ -12,6 +12,11 @@ class CommentService {
                 model: UserModel,
                 required: true,
                 attributes: ['id', 'name', 'avatar'],
+            },
+            {
+                model: PostModel,
+                required: true,
+                attributes: []
             }
         ]
     }
