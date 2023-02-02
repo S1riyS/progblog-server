@@ -86,9 +86,14 @@ class PostService {
     }
 
     async delete(id) {
-        await PostModel
+        return await PostModel
             .destroy({where: {id: id}})
-            .then(() => ({status: true, message: 'Post Removed'}))
+            .then((isDeleted) => {
+                if (isDeleted) {
+                    return {success: true, message: 'Post removed'}
+                }
+                return {success: false, message: 'Post was not removed'}
+            })
             .catch((error) => {
                 console.log(error);
                 throw new Error('Post Delete Operation Failed');
