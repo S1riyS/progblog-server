@@ -56,7 +56,6 @@ class CommentService {
         const retrieveAllQuery = this.#genericRetrieveQuery
         retrieveAllQuery.where = queryParams
         retrieveAllQuery.order = [['createdAt', 'DESC']]
-        console.log(retrieveAllQuery);
 
         return await CommentModel
             .findAll(retrieveAllQuery)
