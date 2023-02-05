@@ -5,9 +5,9 @@ const validate = require('../middlewares/validation.middleware')
 const authMiddleware = require('../middlewares/auth.middleware')
 const CommentController = require('../controllers/comment.controller')
 
-router.post('/', [
+router.post('/', authMiddleware, [
     check('text', 'Comment can not be empty').notEmpty()
-], authMiddleware, validate, CommentController.create)
+], validate, CommentController.create)
 
 router.get('/:id', CommentController.getOne)
 router.get('/post/:postId', CommentController.getByPost)
