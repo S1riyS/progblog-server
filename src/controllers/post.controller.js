@@ -1,7 +1,7 @@
 const uuid = require('uuid')
 const path = require('path');
 const asyncHandler = require('express-async-handler')
-const createError = require('http-errors')
+const ApiError = require('../errors/apiError')
 const UserService = require('../services/user.service')
 const TagService = require('../services/tag.service')
 const PostService = require('../services/post.service')
@@ -20,13 +20,13 @@ class PostController {
 
         // Checking tags
         if (tags.length > 5) {
-            throw createError(400, 'The maximum number of tags is 5')
+            throw ApiError.badRequest('The maximum number of tags is 5')
         }
 
         // Validating user
         const author = await UserService.check({'id': userId})
         if (!author) {
-            throw createError(400, 'The user is specified incorrectly')
+            throw ApiError.badRequest('The user is specified incorrectly')
         }
 
         try {
@@ -52,7 +52,7 @@ class PostController {
             res.status(200).json(post)
 
         } catch (e) {
-            throw createError(400, e.message)
+            throw ApiError.badRequest(e.message)
         }
     })
 
@@ -64,7 +64,7 @@ class PostController {
             res.status(200).json(post)
 
         } catch (e) {
-            throw createError(400, e.message)
+            throw ApiError.badRequest(e.message)
         }
     })
 
@@ -74,7 +74,7 @@ class PostController {
             res.status(200).json(posts)
 
         } catch (e) {
-            throw createError(400, e.message)
+            throw ApiError.badRequest(e.message)
         }
     })
 
@@ -85,7 +85,7 @@ class PostController {
             res.status(200).json(posts)
 
         } catch (e) {
-            throw createError(400, e.message)
+            throw ApiError.badRequest(e.message)
         }
     })
 
@@ -96,7 +96,7 @@ class PostController {
             const serviceResponse = await PostService.delete(id)
             res.status(200).json(serviceResponse)
         } catch (e) {
-            throw createError(400, e.message)
+            throw ApiError.badRequest(e.message)
         }
     })
 }

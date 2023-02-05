@@ -2,7 +2,7 @@ const uuid = require('uuid')
 const path = require('path');
 const bcrypt = require('bcrypt')
 const asyncHandler = require('express-async-handler')
-const createError = require('http-errors')
+const ApiError = require('../errors/apiError')
 const generateJWT = require('../utils/generateJWT')
 const UserService = require('../services/user.service')
 
@@ -12,12 +12,13 @@ class UserController {
         const {avatar} = req.files
 
         if (!email || !password) {
-            throw createError(400, 'Incorrect email or password')
+            throw ApiError.badRequest('Incorrect email or password')
         }
 
         const candidate = await UserService.check({'email': email})
+        console.log(candidate);
         if (candidate) {
-            throw createError(400, 'User with this email is already exist')
+            throw ApiError.badRequest('User with this email is already exist')
         }
 
         // Saving profile picture to static
@@ -41,7 +42,7 @@ class UserController {
             res.status(200).json({token})
 
         } catch (e) {
-            throw createError(400, e.message)
+            throw ApiError.internal(e.message)
         }
     })
 
@@ -49,19 +50,19 @@ class UserController {
         const {email, password} = req.body
         const user = await UserService.retrieveOne({'email': email})
             .catch(() => {
-                throw createError(400, 'Wrong email or password')
+                throw ApiError.badRequest('Wrong email or password')
             })
 
         let comparePassword = bcrypt.compareSync(password, user.dataValues.password)
         if (!comparePassword) {
-            throw createError(400, 'Wrong email or password')
+            throw ApiError.badRequest('Wrong email or password')
         }
 
         try {
             const token = generateJWT({id: user.dataValues.id, email: user.dataValues.email})
             return res.status(200).json({token})
         } catch (e) {
-            throw createError(400, e.message)
+            throw ApiError.internal(e.message)
         }
     })
 
@@ -70,7 +71,7 @@ class UserController {
             const token = generateJWT({id: req.user.id, email: req.user.email})
             return res.status(200).json({token})
         } catch (e) {
-            throw createError(400, e.message)
+            throw ApiError.internal(e.message)
         }
     })
 
@@ -80,7 +81,7 @@ class UserController {
             const user = await UserService.retrieveOne({'id': id})
             res.status(200).json(user)
         } catch (e) {
-            throw createError(400, e.message)
+            throw ApiError.internal(e.message)
         }
     })
 
@@ -89,7 +90,7 @@ class UserController {
             const users = await UserService.retrieveAll()
             res.status(200).json(users)
         } catch (e) {
-            throw createError(400, e.message)
+            throw ApiError.internal(e.message)
         }
     })
 }

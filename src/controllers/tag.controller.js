@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler')
-const createError = require('http-errors')
+const ApiError = require('../errors/apiError')
 const TagService = require('../services/tag.service')
 
 class TagController {
@@ -8,7 +8,7 @@ class TagController {
 
         const candidate = await TagService.check(name)
         if (candidate) {
-            throw createError(400, 'Tag with this name is already exist')
+            throw ApiError.badRequest('Tag with this name is already exist')
         }
 
         try {
@@ -18,7 +18,7 @@ class TagController {
             })
             res.status(200).json(tag)
         } catch (e) {
-            throw createError(400, e.message)
+            throw ApiError.internal(e.message)
         }
     })
 
@@ -29,7 +29,7 @@ class TagController {
             res.status(200).json(tag)
 
         } catch (e) {
-            throw createError(400, e.message)
+            throw ApiError.internal(e.message)
         }
     })
 
@@ -39,7 +39,7 @@ class TagController {
             return res.status(200).json(tags)
 
         } catch (e) {
-            throw createError(400, e.message)
+            throw ApiError.internal(e.message)
         }
     })
 }

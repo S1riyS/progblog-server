@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler')
-const createError = require('http-errors')
+const ApiError = require('../errors/apiError')
 const CommentService = require('../services/comment.service')
 const UserService = require('../services/user.service')
 const PostService = require('../services/post.service')
@@ -9,18 +9,14 @@ class CommentController {
         const {text, userId, postId} = req.body
         const processedText = text.trim()
 
-        if (processedText === '') {
-            throw createError(400, 'Comment can\'t be empty')
-        }
-
         const authorExists = await UserService.check({'id': userId})
         if (!authorExists) {
-            throw createError(400, 'The user is specified incorrectly')
+            throw ApiError.badRequest('The user is specified incorrectly')
         }
 
         const postExists = await PostService.check({'id': postId})
         if (!postExists) {
-            throw createError(400, 'The post is specified incorrectly')
+            throw ApiError.badRequest('The post is specified incorrectly')
         }
 
         try {
@@ -32,7 +28,7 @@ class CommentController {
             res.status(200).json(comment)
 
         } catch (e) {
-            throw createError(400, e.message)
+            throw ApiError.internal(e.message)
         }
     })
 
@@ -42,7 +38,7 @@ class CommentController {
             const comment = await CommentService.retrieveOne(id)
             res.status(200).json(comment)
         } catch (e) {
-            throw createError(400, e.message)
+            throw ApiError.internal(e.message)
         }
     })
 
@@ -52,7 +48,7 @@ class CommentController {
             const comments = await CommentService.retrieveAll({'$Post.id$': postId})
             res.status(200).json(comments)
         } catch (e) {
-            throw createError(400, e.message)
+            throw ApiError.internal(e.message)
         }
     })
 
@@ -62,7 +58,7 @@ class CommentController {
             const comments = await CommentService.retrieveAll({'$User.id$': userId})
             res.status(200).json(comments)
         } catch (e) {
-            throw createError(400, e.message)
+            throw ApiError.internal(e.message)
         }
     })
 
@@ -72,7 +68,7 @@ class CommentController {
             const serviceResponse = await CommentService.delete(id)
             res.status(200).json(serviceResponse)
         } catch (e) {
-            throw createError(400, e.message)
+            throw ApiError.internal(e.message)
         }
     })
 }
