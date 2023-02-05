@@ -8,7 +8,7 @@ const fileUpload = require('express-fileupload')
 const config = require('./config')
 const apiRoutes = require('./api')
 const database = require("./config/db.config");
-const errorsHandler = require("./middlewares/errorsHandler.middleware");
+const ErrorsHandler = require("./middlewares/errorsHandler.middleware");
 
 
 class Application {
@@ -46,7 +46,7 @@ class Application {
         // Load API
         this.app.use(this.config.api.prefix, apiRoutes);
         // Errors handler
-        this.app.use(errorsHandler)
+        this.app.use(ErrorsHandler.handle())
     }
 
     setupServer = async () => {
