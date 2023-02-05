@@ -2,12 +2,13 @@ const Router = require("express");
 const router = new Router()
 const {check} = require("express-validator")
 const validate = require('../middlewares/validation.middleware')
+const authMiddleware = require('../middlewares/auth.middleware')
 const PostController = require('../controllers/post.controller')
 
 router.post('/', [
     check('title', 'Title can not be empty').notEmpty(),
     check('content', 'Content can not be empty').notEmpty(),
-], validate, PostController.create)
+], validate, authMiddleware, PostController.create)
 
 router.get('/', PostController.getAll)
 router.get('/tag/:tagName', PostController.getByTag)
