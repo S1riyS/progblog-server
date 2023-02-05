@@ -1,4 +1,5 @@
 const {validationResult} = require('express-validator')
+const ApiError = require('../errors/apiError')
 
 function processValidationErrors(errors) {
     let messages = []
@@ -14,7 +15,7 @@ module.exports = function (req, res, next) {
 
     if (!validationErrors.isEmpty()) {
         const message = processValidationErrors(validationErrors)
-        res.status(400).json({status: 400, message: message})
+        next(ApiError.badRequest(message))
     } else {
         next()
     }
