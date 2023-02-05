@@ -21,7 +21,6 @@
     "express-fileupload": "^1.4.0",
     "express-validator": "^6.14.3",
     "helmet": "^6.0.1",
-    "http-errors": "^2.0.0",
     "jsonwebtoken": "^9.0.0",
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
