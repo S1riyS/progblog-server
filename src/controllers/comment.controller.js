@@ -7,7 +7,6 @@ const PostService = require('../services/post.service')
 class CommentController {
     create = asyncHandler(async (req, res, next) => {
         const {text, userId, postId} = req.body
-        const processedText = text.trim()
 
         const authorExists = await UserService.check({'id': userId})
         if (!authorExists) {
@@ -21,7 +20,7 @@ class CommentController {
 
         try {
             const comment = await CommentService.create({
-                text: processedText,
+                text: text,
                 userId: userId,
                 postId: postId
             })
